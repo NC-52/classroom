@@ -1,8 +1,8 @@
 const express = require('express');
-const { body } = require('express-validator/check');
 
 const classroomController = require('../controllers/classroom');
 const isAuth = require('../middleware/is-auth');
+const classroomValidator = require('../middleware/classroom-validator');
 
 const router = express.Router();
 
@@ -13,19 +13,7 @@ router.get('/classrooms', isAuth, classroomController.getClassrooms);
 router.post(
     '/classrooms',
     isAuth, 
-    [
-        body('clRoom')
-            .trim()
-            .isLength({min: 10})
-        ,
-        body('numOfStudents')
-            .trim()
-            .isLength({min: 10})
-        ,
-        body('size')
-            .trim()
-            .isLength({min: 5})            
-    ],
+    classroomValidator,
     classroomController.createClassroom
 );
 
@@ -34,19 +22,7 @@ router.get('/classrooms/:classId', isAuth, classroomController.getClassroom);
 router.put(
     '/classrooms/:classId',
     isAuth,
-    [
-        body('clRoom')
-            .trim()
-            .isLength({min: 10})
-        ,
-        body('numOfStudents')
-            .trim()
-            .isLength({min: 10})
-        ,
-        body('size')
-            .trim()
-            .isLength({min: 5})            
-    ],
+    classroomValidator,
     classroomController.updateClassroom
 );
 //the put http method is using if we want to replace a resource; can only be sent through async requests triggered by js
