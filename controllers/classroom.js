@@ -1,8 +1,6 @@
 const { validationResult, Result } = require('express-validator/check');
-const { countDocuments, findByIdAndRemove } = require('../models/classroom');
 
 const Classroom = require('../models/classroom');
-const classroom = require('../models/classroom');
 const User = require('../models/user');
 
 exports.getClassrooms = (req, res, next) => {
@@ -47,7 +45,7 @@ exports.createClassroom = (req, res, next) => {
             user.classrooms = [classroom._id];
             return user.save();
         })
-        .then(result => {
+        .then(() => {
             res.status(201).json({ //201 status code means a resource was created successfully
                 message: 'Classroom created successfully!',
                 classroom: classroom,
@@ -139,7 +137,7 @@ exports.deleteClassroom = (req, res, next) => {
                 //check logged in user
             return Classroom.findByIdAndRemove(classId);
         })
-        .then(result => {
+        .then(() => {
             return User.findById(req.userId);
         })
         .then(user => {
