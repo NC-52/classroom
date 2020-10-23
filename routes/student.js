@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/get-students', isAuth, studentController.getStudents);   
 
 router.post(
-    'create-student',
+    '/create-student',
     isAuth, 
     studentValidator,
     studentController.createStudent
