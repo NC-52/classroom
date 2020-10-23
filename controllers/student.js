@@ -46,7 +46,7 @@ exports.createStudent = (req, res, next) => {
         })
         .then(user => {
             creator = user;
-            user.students.push(student);
+            user.students = [student._id];
             return user.save();
         })
         .then(result => {
@@ -87,7 +87,7 @@ exports.updateStudent = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const error = new Error('Validation failed, entered data is incorrect.');
-        error.satusCode = 422;
+        error.statusCode = 422;
         throw error;
     }
     const firstName = req.body.firstName;
@@ -114,7 +114,7 @@ exports.updateStudent = (req, res, next) => {
             return student.save();
         })
         .then(result => {
-            res.satus(200).json({ message: 'Student updated!', student: result });
+            res.status(200).json({ message: 'Student updated!', student: result });
         })
         .catch(err => {
             if (!err.satusCode) {
@@ -141,17 +141,17 @@ exports.deleteStudent = (req, res, next) => {
                 throw error;
             }
                 //check logged in user
-            return findByIdAndRemove(studentId);
+            return Student.findByIdAndRemove(studentId);
         })
         .then(result => {
             return User.findById(req.userId);
         })
         .then(user => {
-            user.students.pull(studentId);
+            user.students = null;
             return user.save();
         })
         .then(result => {
-            res.status(200).json({ message: 'Deleted student.' })
+            res.status(200).json({ message: 'Deleted student.', user: result })
         })
         .catch(err => {
             if (!err.satusCode) {

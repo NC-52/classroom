@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const mySecret = require('../config/config');
 
 exports.signup = (req, res, next) => {
     const errors = validationResult(req);
@@ -12,15 +13,16 @@ exports.signup = (req, res, next) => {
         error.data = errors.array();
         throw error;
     }
-    const email = req.body.email;
+    /*const email = req.body.email;
     const name = req.body.name;
-    const password = req.body.password;
+    const password = req.body.password;*/
+    const {email, name, password} = req.body;
     bcrypt
         .hash(password, 12)
-        .then(hasedPw => {
+        .then(hashedPassword => {
             const user = new User({
                 email: email,
-                password: hasedPw,
+                password: hashedPassword,
                 name: name
             });
             return user.save();
@@ -38,8 +40,9 @@ exports.signup = (req, res, next) => {
 }
 
 exports.login = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    /*const email = req.body.email;
+    const password = req.body.password;*/
+    const {email, password} = req.body;
     let loadedUser;
     User
         .findOne({email: email})
@@ -64,7 +67,7 @@ exports.login = (req, res, next) => {
                     email:  loadedUser.email,
                     userId: loadedUser._id.toString()
                 },
-                'somesupersecretsecret', //the secret we store has to be a long string hence its name
+                mySecret, //the secret we store has to be a long string hence its name
                 { expiresIn: '1h' } //sets an expiry time for the token
             );
             //this creates a new signature and packs that into a new json web token

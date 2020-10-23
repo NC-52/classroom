@@ -28,12 +28,13 @@ exports.createClassroom = (req, res, next) => {
         })
     }
     const clRoom = req.body.clRoom;
+    const clName = req.body.clName;
     const numOfStudents = req.body.numOfStudents;
     const size = req.body.size;
     let creator;
     const classroom = new Classroom({
-        clRoom: clRoom,
-        numOfStudents: numOfStudents,
+        clName: clName,
+        numberOfStudents: numOfStudents,
         size: size,
         creator: req.userId
     });
@@ -44,7 +45,7 @@ exports.createClassroom = (req, res, next) => {
         })
         .then(user => {
             creator = user;
-            user.classrooms.push(classrooms);
+            user.classrooms = [classroom._id];
             return user.save();
         })
         .then(result => {
@@ -85,10 +86,10 @@ exports.updateClassroom = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const error = new Error('Validation failed, entered data is incorrect.');
-        error.satusCode = 422;
+        error.statusCode = 422;
         throw error;
     }
-    const clRoom = req.body.clRoom;
+    const clName = req.body.clName;
     const numOfStudents = req.body.numOfStudents;
     const size = req.body.size;
     Classroom
@@ -104,13 +105,13 @@ exports.updateClassroom = (req, res, next) => {
                 error.satusCode = 403;
                 throw error;
             }
-            Classroom.clRoom = clRoom;
-            Classroom.numOfStudents = numOfStudents;
-            Classroom.size = size;
+            classroom.clName = clName;
+            classroom.numberOfStudents = numOfStudents;
+            classroom.size = size;
             return classroom.save();
         })
         .then(result => {
-            res.satus(200).json({ message: 'Classroom!', student: result });
+            res.status(200).json({ message: 'Classroom!', classroom: result });
         })
         .catch(err => {
             if (!err.satusCode) {
@@ -137,17 +138,17 @@ exports.deleteClassroom = (req, res, next) => {
                 throw error;
             }
                 //check logged in user
-            return findByIdAndRemove(classId);
+            return Classroom.findByIdAndRemove(classId);
         })
         .then(result => {
             return User.findById(req.userId);
         })
         .then(user => {
-            user.classrooms.pull(classId);
+            user.classrooms = null;
             return user.save();
         })
         .then(result => {
-            res.status(200).json({ message: 'Deleted classroom.' })
+            res.status(200).json({ message: 'Deleted classroom.', user: result })
         })
         .catch(err => {
             if (!err.satusCode) {

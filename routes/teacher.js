@@ -6,12 +6,10 @@ const isAuth = require('../middleware/is-auth');
 
 const router = express.Router();
 
-//GET /feed/posts
-router.get('/teachers', isAuth, teacherController.getTeachers);   
+router.get(isAuth, teacherController.getTeachers);   
 
-//POST //post
 router.post(
-    '/teachers',
+    'createteacher',
     isAuth, 
     [
         body('firstName')
@@ -29,10 +27,10 @@ router.post(
     teacherController.createTeacher
 );
 
-router.get('/teachers/:teacherId', isAuth, teacherController.getTeacher);
+router.get('/getteacher/:teacherId', isAuth, teacherController.getTeacher);
 
 router.put(
-    '/teachers/:teacherId',
+    '/updateteacher/:teacherId',
     isAuth,
     [
         body('firstName')
@@ -49,8 +47,7 @@ router.put(
     ],
     teacherController.updateteacher
 );
-//the put http method is using if we want to replace a resource; can only be sent through async requests triggered by js
 
-router.delete('/teachers/:teacherId', isAuth, teacherController.deleteTeacher);
+router.delete('/deleteteacher/:teacherId', isAuth, teacherController.deleteTeacher);
 
 module.exports = router;

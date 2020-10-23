@@ -1,4 +1,5 @@
 const { validationResult, Result } = require('express-validator/check');
+const classroom = require('../models/classroom');
 const teacher = require('../models/teacher');
 const { countDocuments, findByIdAndRemove } = require('../models/teacher');
 
@@ -44,7 +45,7 @@ exports.createTeacher = (req, res, next) => {
         })
         .then(user => {
             creator = user;
-            user.teachers.push(teacher);
+            user.teachers = [teacher._id];
             return user.save();
         })
         .then(result => {
@@ -104,13 +105,13 @@ exports.updateteacher = (req, res, next) => {
                 error.satusCode = 403;
                 throw error;
             }
-            student.firstName = firstName;
-            student.lastName = lastName;
-            student.classroomId = classroomId;
+            teacher.firstName = firstName;
+            teacher.lastName = lastName;
+            teacher.classroomId = classroomId;
             return teacher.save();
         })
         .then(result => {
-            res.satus(200).json({ message: 'Teacher updated!', teacher: result });
+            res.status(200).json({ message: 'Teacher updated!', teacher: result });
         })
         .catch(err => {
             if (!err.satusCode) {
@@ -137,17 +138,17 @@ exports.deleteTeacher = (req, res, next) => {
                 throw error;
             }
                 //check logged in user
-            return findByIdAndRemove(teacherId);
+            return Teacher.findByIdAndRemove(teacherId);
         })
         .then(result => {
             return User.findById(req.userId);
         })
         .then(user => {
-            user.teachers.pull(teacherId);
+            user.teachers = null;
             return user.save();
         })
         .then(result => {
-            res.status(200).json({ message: 'Deleted teacher.' })
+            res.status(200).json({ message: 'Deleted teacher.', user: result })
         })
         .catch(err => {
             if (!err.satusCode) {

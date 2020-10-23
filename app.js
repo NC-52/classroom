@@ -26,9 +26,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(studentRoutes);
-app.use(teacherRoutes);
-app.use(classroomRoutes);
+app.use('/students', studentRoutes);
+app.use('/teachers', teacherRoutes);
+app.use('/classrooms', classroomRoutes);
 app.use('/auth', authRoutes);
 
 app.use((error, req, res, next) => {
