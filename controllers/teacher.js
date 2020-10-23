@@ -13,8 +13,8 @@ exports.getTeachers = (req, res, next) => {
             res.status(200).json({ message: 'Fetched teachers successfully.', teachers: teachers });
         })
         .catch(err => {
-            if (!err.satusCode) {
-                err.satusCode = 500;
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
             next(err);
         })
@@ -73,8 +73,8 @@ exports.getTeacher = (req, res, next) => {
             res.status(200).json({ message: 'Teacher fetched', teacher: teacher });
         })
         .catch(err => {
-            if (!err.satusCode) {
-                err.satusCode = 500;
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
             next(err);  
         })
@@ -86,7 +86,7 @@ exports.updateteacher = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const error = new Error('Validation failed, entered data is incorrect.');
-        error.satusCode = 422;
+        error.statusCode = 422;
         throw error;
     }
     const firstName = req.body.firstName;
@@ -97,12 +97,12 @@ exports.updateteacher = (req, res, next) => {
         .then(teacher => {
             if(!teacher) {
                 const error = new Error('Could not find teacher.');
-                error.satusCode = 404;
+                error.statusCode = 404;
                 throw error;               
             }
             if (teacher.creator.toString() !== req.userId) {
                 const error = new Error('Not authorized!');
-                error.satusCode = 403;
+                error.statusCode = 403;
                 throw error;
             }
             teacher.firstName = firstName;
@@ -115,7 +115,7 @@ exports.updateteacher = (req, res, next) => {
         })
         .catch(err => {
             if (!err.satusCode) {
-                err.satusCode = 500;
+                err.statusCode = 500;
             }
             next(err);           
         })
@@ -129,12 +129,12 @@ exports.deleteTeacher = (req, res, next) => {
         .then(teacher => {
             if(!teacher) {
                 const error = new Error('Could not find teacher.');
-                error.satusCode = 404;
+                error.statusCode = 404;
                 throw error;               
             }
             if (teacher.creator.toString() !== req.userId) {
                 const error = new Error('Not authorized!');
-                error.satusCode = 403;
+                error.statusCode = 403;
                 throw error;
             }
                 //check logged in user
@@ -151,8 +151,8 @@ exports.deleteTeacher = (req, res, next) => {
             res.status(200).json({ message: 'Deleted teacher.', user: result })
         })
         .catch(err => {
-            if (!err.satusCode) {
-                err.satusCode = 500;
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
             next(err);           
         })

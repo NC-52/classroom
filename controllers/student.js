@@ -12,8 +12,8 @@ exports.getStudents = (req, res, next) => {
             res.status(200).json({ message: 'Fetched students successfully.', students: students });
         })
         .catch(err => {
-            if (!err.satusCode) {
-                err.satusCode = 500;
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
             next(err);
         })
@@ -64,18 +64,18 @@ exports.createStudent = (req, res, next) => {
 exports.getStudent = (req, res, next) => {
     const studentId = req.params.studentId;
     Student
-        .findById(postId)
+        .findById(studentId)
         .then(student => {
             if (!student) {
                 const error = new Error('Could not find student.');
-                error.satusCode = 404;
+                error.statusCode = 404;
                 throw error;
             }
             res.status(200).json({ message: 'Student fetched', student: student });
         })
         .catch(err => {
-            if (!err.satusCode) {
-                err.satusCode = 500;
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
             next(err);  
         })
@@ -99,12 +99,12 @@ exports.updateStudent = (req, res, next) => {
         .then(student => {
             if(!student) {
                 const error = new Error('Could not find student.');
-                error.satusCode = 404;
+                error.statusCode = 404;
                 throw error;               
             }
             if (student.creator.toString() !== req.userId) {
                 const error = new Error('Not authorized!');
-                error.satusCode = 403;
+                error.statusCode = 403;
                 throw error;
             }
             student.firstName = firstName;
@@ -117,8 +117,8 @@ exports.updateStudent = (req, res, next) => {
             res.status(200).json({ message: 'Student updated!', student: result });
         })
         .catch(err => {
-            if (!err.satusCode) {
-                err.satusCode = 500;
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
             next(err);           
         })
@@ -132,12 +132,12 @@ exports.deleteStudent = (req, res, next) => {
         .then(student => {
             if(!student) {
                 const error = new Error('Could not find student.');
-                error.satusCode = 404;
+                error.statusCode = 404;
                 throw error;               
             }
             if (student.creator.toString() !== req.userId) {
                 const error = new Error('Not authorized!');
-                error.satusCode = 403;
+                error.statusCode = 403;
                 throw error;
             }
                 //check logged in user
@@ -154,8 +154,8 @@ exports.deleteStudent = (req, res, next) => {
             res.status(200).json({ message: 'Deleted student.', user: result })
         })
         .catch(err => {
-            if (!err.satusCode) {
-                err.satusCode = 500;
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
             next(err);           
         })

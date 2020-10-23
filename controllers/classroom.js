@@ -73,7 +73,7 @@ exports.getClassroom = (req, res, next) => {
         })
         .catch(err => {
             if (!err.satusCode) {
-                err.satusCode = 500;
+                err.statusCode = 500;
             }
             next(err);  
         })
@@ -96,12 +96,12 @@ exports.updateClassroom = (req, res, next) => {
         .then(classroom => {
             if(!classroom) {
                 const error = new Error('Could not find classroom.');
-                error.satusCode = 404;
+                error.statusCode = 404;
                 throw error;               
             }
             if (classroom.creator.toString() !== req.userId) {
                 const error = new Error('Not authorized!');
-                error.satusCode = 403;
+                error.statusCode = 403;
                 throw error;
             }
             classroom.clName = clName;
@@ -113,8 +113,8 @@ exports.updateClassroom = (req, res, next) => {
             res.status(200).json({ message: 'Classroom!', classroom: result });
         })
         .catch(err => {
-            if (!err.satusCode) {
-                err.satusCode = 500;
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
             next(err);           
         })
@@ -128,12 +128,12 @@ exports.deleteClassroom = (req, res, next) => {
         .then(classroom => {
             if(!classroom) {
                 const error = new Error('Could not find classroom.');
-                error.satusCode = 404;
+                error.statusCode = 404;
                 throw error;               
             }
             if (classroom.creator.toString() !== req.userId) {
                 const error = new Error('Not authorized!');
-                error.satusCode = 403;
+                error.statusCode = 403;
                 throw error;
             }
                 //check logged in user
@@ -150,8 +150,8 @@ exports.deleteClassroom = (req, res, next) => {
             res.status(200).json({ message: 'Deleted classroom.', user: result })
         })
         .catch(err => {
-            if (!err.satusCode) {
-                err.satusCode = 500;
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
             next(err);           
         })
