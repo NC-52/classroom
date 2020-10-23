@@ -5,7 +5,7 @@ const validator = [
         .trim()
         .isLength({min: 10})
     ,
-    body('numOfStudents')
+    body('numberOfStudents')
         .trim()
         .isLength({min: 10})
     ,

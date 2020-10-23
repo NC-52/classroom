@@ -27,15 +27,14 @@ exports.createClassroom = (req, res, next) => {
             errors: errors.array()
         })
     }
-    const clRoom = req.body.clRoom;
     const clName = req.body.clName;
     const numOfStudents = req.body.numOfStudents;
     const size = req.body.size;
     let creator;
     const classroom = new Classroom({
-        clName: clName,
+        clName, //clName: clName,
         numberOfStudents: numOfStudents,
-        size: size,
+        size, //size: size,
         creator: req.userId
     });
     classroom
