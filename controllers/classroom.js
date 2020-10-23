@@ -69,7 +69,7 @@ exports.getClassroom = (req, res, next) => {
                 error.satusCode = 404;
                 throw error;
             }
-            res.satus(200).json({ message: 'Classroom fetched', classroom: classroom });
+            res.status(200).json({ message: 'Classroom fetched', classroom: classroom });
         })
         .catch(err => {
             if (!err.satusCode) {

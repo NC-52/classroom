@@ -1,53 +1,29 @@
 const express = require('express');
-const { body } = require('express-validator/check');
 
 const teacherController = require('../controllers/teacher');
 const isAuth = require('../middleware/is-auth');
+const teacherValidator = require('../middleware/teacher-validator');
 
 const router = express.Router();
 
-router.get(isAuth, teacherController.getTeachers);   
+router.get('/get-teachers', isAuth, teacherController.getTeachers);   
 
 router.post(
-    'createteacher',
+    '/create-teacher',
     isAuth, 
-    [
-        body('firstName')
-            .trim()
-            .isLength({min: 10})
-        ,
-        body('lastName')
-            .trim()
-            .isLength({min: 10})
-        ,
-        body('classroomId')
-            .trim()
-            .isLength({min: 5})            
-    ],
+    teacherValidator,
     teacherController.createTeacher
 );
 
-router.get('/getteacher/:teacherId', isAuth, teacherController.getTeacher);
+router.get('/get-teacher/:teacherId', isAuth, teacherController.getTeacher);
 
 router.put(
-    '/updateteacher/:teacherId',
+    '/update-teacher/:teacherId',
     isAuth,
-    [
-        body('firstName')
-            .trim()
-            .isLength({min: 10})
-        ,
-        body('lastName')
-            .trim()
-            .isLength({min: 10})
-        ,
-        body('classroomId')
-            .trim()
-            .isLength({min: 5})            
-    ],
+    teacherValidator,
     teacherController.updateteacher
 );
 
-router.delete('/deleteteacher/:teacherId', isAuth, teacherController.deleteTeacher);
+router.delete('/delete-teacher/:teacherId', isAuth, teacherController.deleteTeacher);
 
 module.exports = router;

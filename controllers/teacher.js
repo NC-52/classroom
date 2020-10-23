@@ -70,7 +70,7 @@ exports.getTeacher = (req, res, next) => {
                 error.satusCode = 404;
                 throw error;
             }
-            res.satus(200).json({ message: 'Teacher fetched', teacher: teacher });
+            res.status(200).json({ message: 'Teacher fetched', teacher: teacher });
         })
         .catch(err => {
             if (!err.satusCode) {

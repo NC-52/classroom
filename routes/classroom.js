@@ -15,15 +15,15 @@ router.post(
     classroomController.createClassroom
 );
 
-router.get('/getclass/:classId', isAuth, classroomController.getClassroom);
+router.get('/get-class/:classId', isAuth, classroomController.getClassroom);
 
 router.put(
-    '/updateclass/:classId',
+    '/update-class/:classId',
     isAuth,
     classroomValidator,
     classroomController.updateClassroom
 );
 
-router.delete('/deleteclass/:classId', isAuth, classroomController.deleteClassroom);
+router.delete('/delete-class/:classId', isAuth, classroomController.deleteClassroom);
 
 module.exports = router;

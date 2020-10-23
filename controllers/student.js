@@ -71,7 +71,7 @@ exports.getStudent = (req, res, next) => {
                 error.satusCode = 404;
                 throw error;
             }
-            res.satus(200).json({ message: 'Student fetched', student: student });
+            res.status(200).json({ message: 'Student fetched', student: student });
         })
         .catch(err => {
             if (!err.satusCode) {
