@@ -6,24 +6,14 @@ const studentValidator = require('../middleware/student-validator');
 
 const router = express.Router();
  
-router.get('/get-students', isAuth, studentController.getStudents);   
+router.get(isAuth, studentController.getStudents);   
 
-router.post(
-    '/create-student',
-    isAuth, 
-    studentValidator,
-    studentController.createStudent
-);
+router.post(isAuth, studentValidator, studentController.createStudent);
 
-router.get('/get-student/:studentId', isAuth, studentController.getStudent);
+router.get('/:studentId', isAuth, studentController.getStudent);
 
-router.put(
-    '/update-student/:studentId',
-    isAuth,
-    studentValidator,
-    studentController.updateStudent
-);
+router.put('/:studentId', isAuth, studentValidator, studentController.updateStudent);
 
-router.delete('/delete-student/:studentId', isAuth, studentController.deleteStudent);
+router.delete('/:studentId', isAuth, studentController.deleteStudent);
 
 module.exports = router;

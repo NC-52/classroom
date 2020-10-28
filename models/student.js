@@ -12,7 +12,7 @@ const studentSchema = new Schema(
             required: true
         },
         grade: {
-            type: Number,
+            type: String,
             required: true
         },
         classId: {

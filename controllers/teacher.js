@@ -1,7 +1,6 @@
-const { validationResult, Result } = require('express-validator/check');
+const { validationResult } = require('express-validator/check');
 const classroom = require('../models/classroom');
 const teacher = require('../models/teacher');
-const { countDocuments, findByIdAndRemove } = require('../models/teacher');
 
 const Teacher = require('../models/teacher');
 const User = require('../models/user');
@@ -40,7 +39,7 @@ exports.createTeacher = (req, res, next) => {
     });
     teacher
         .save()
-        .then(result => {
+        .then(() => {
             return User.findById(req.userId);
         })
         .then(user => {
@@ -48,7 +47,7 @@ exports.createTeacher = (req, res, next) => {
             user.teachers = [teacher._id];
             return user.save();
         })
-        .then(result => {
+        .then(() => {
             res.status(201).json({ //201 status code means a resource was created successfully
                 message: 'Teacher created successfully!',
                 teacher: teacher,
@@ -140,7 +139,7 @@ exports.deleteTeacher = (req, res, next) => {
                 //check logged in user
             return Teacher.findByIdAndRemove(teacherId);
         })
-        .then(result => {
+        .then(() => {
             return User.findById(req.userId);
         })
         .then(user => {

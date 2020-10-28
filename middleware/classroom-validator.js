@@ -3,15 +3,15 @@ const { body } = require('express-validator/check');
 const validator = [
     body('clName')
         .trim()
-        .isLength({min: 10})
+        .isLength({max: 15})
     ,
     body('numOfStudents')
         .trim()
-        .isLength({min: 10})
+        .isInt({min: 5})
     ,
     body('size')
         .trim()
-        .isLength({min: 5})            
+        .isInt({max: 10})            
 ]
 
 module.exports = validator;
